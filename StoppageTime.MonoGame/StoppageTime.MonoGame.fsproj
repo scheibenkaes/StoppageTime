@@ -40,4 +40,10 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StoppageTime.Game\StoppageTime.Game.fsproj">
+      <Project>{7D7F7607-D0D3-44F0-9792-5F370EDD3069}</Project>
+      <Name>StoppageTime.Game</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

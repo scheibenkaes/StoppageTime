@@ -1,19 +1,27 @@
 ﻿namespace StoppageTime.MonoGame
 
 open Microsoft.Xna.Framework
+open Microsoft.Xna.Framework.Graphics
 
-type MyGame() as this = 
+open State
+
+type MyGame (width, height) as this = 
     inherit Game()
 
     let graphics = new GraphicsDeviceManager(this)
-    do graphics.PreferredBackBufferWidth <- 300
-    do graphics.PreferredBackBufferHeight <- 200
-    do this.IsMouseVisible <- true
+    do graphics.PreferredBackBufferWidth <- width
+    do graphics.PreferredBackBufferHeight <- height
 
-    override x.LoadContent() = ()
+    let mutable spriteBatch = Unchecked.defaultof<SpriteBatch>
+
+    override x.LoadContent() =
+        spriteBatch <- new SpriteBatch(this.GraphicsDevice)
     
     override x.Draw gameTime = 
         this.GraphicsDevice.Clear Color.CornflowerBlue
+        spriteBatch.Begin()
+
+        spriteBatch.End()
         ()
     
     override x.Update gameTime = ()
