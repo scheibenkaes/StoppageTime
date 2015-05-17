@@ -5,6 +5,11 @@ open Microsoft.Xna.Framework.Graphics
 
 open State
 
+type Resources = {
+    Pitch : Texture2D;
+    Font : SpriteFont
+}
+
 type MyGame (width, height) as this = 
     inherit Game()
 
@@ -13,14 +18,25 @@ type MyGame (width, height) as this =
     do graphics.PreferredBackBufferHeight <- height
 
     let mutable spriteBatch = Unchecked.defaultof<SpriteBatch>
+    let mutable resources = Unchecked.defaultof<Resources>
+
+    let renderPitch (sb: SpriteBatch) =
+        sb.Draw(resources.Pitch, Vector2.Zero, Color.White)
 
     override x.LoadContent() =
         spriteBatch <- new SpriteBatch(this.GraphicsDevice)
-    
+        this.Content.RootDirectory <- "Content"
+        resources <- {
+            Pitch = this.Content.Load<Texture2D>("Images/pitch");
+            Font = this.Content.Load<SpriteFont>("Fonts/Font")
+        }
+
     override x.Draw gameTime = 
         this.GraphicsDevice.Clear Color.CornflowerBlue
         spriteBatch.Begin()
-
+        spriteBatch
+        |> renderPitch
+        |> ignore
         spriteBatch.End()
         ()
     
