@@ -59,5 +59,9 @@
       <Project>{D71D003E-754E-4128-B95C-96FC6EB47B57}</Project>
       <Name>StoppageTime.MonoGame</Name>
     </ProjectReference>
+    <ProjectReference Include="..\StoppageTime.Game\StoppageTime.Game.fsproj">
+      <Project>{7D7F7607-D0D3-44F0-9792-5F370EDD3069}</Project>
+      <Name>StoppageTime.Game</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

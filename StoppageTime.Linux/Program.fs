@@ -1,4 +1,6 @@
-﻿open StoppageTime.MonoGame
+﻿module Main
+
+open MonoGame
 
 [<EntryPoint>]
 let main argv = 
