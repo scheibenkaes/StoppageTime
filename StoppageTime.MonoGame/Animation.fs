@@ -8,6 +8,10 @@ type AnimationState =
     | Paused
     | Running
 
+type Direction = 
+    | Left
+    | Right
+
 type Animation = 
     { CurrentFrame : int
       AnimationTime : TimeSpan
@@ -16,10 +20,13 @@ type Animation =
       State : AnimationState
       Width : int
       Height : int
-      NumberOfTiles : int }
+      NumberOfTiles : int
+      Direction : Direction }
 
 let pause anim = { anim with State = Paused }
 let unpause anim = { anim with State = Running }
+let faceRight anim = { anim with Direction = Right }
+let faceLeft anim = { anim with Direction = Left }
 
 let tick anim (gameTime : GameTime) = 
     if anim.State = Paused then anim
@@ -41,9 +48,13 @@ let createAnimation (texture : Texture2D) numTiles animTime =
       Width = (texture.Width / numTiles)
       Height = texture.Height
       AnimationTime = animTime
-      NumberOfTiles = numTiles }
+      NumberOfTiles = numTiles
+      Direction = Right }
 
 let drawAnimation (sb : SpriteBatch) (animation : Animation) x y = 
     let destRect = Rectangle(x, y, animation.Width, animation.Height)
     let sourceRect = Rectangle(animation.CurrentFrame * animation.Width, 0, animation.Width, animation.Height)
-    sb.Draw(animation.Frames, destRect, Nullable(sourceRect), Color.White)
+    let direction = match animation.Direction with
+                    | Right -> SpriteEffects.None
+                    | Left -> SpriteEffects.FlipHorizontally
+    sb.Draw(animation.Frames, destRect, Nullable(sourceRect), Color.White, 0.0f, Vector2.Zero, direction, 0.f)
