@@ -12,6 +12,7 @@ type Resources = {
     Pitch : Texture2D
     Font : SpriteFont
     Ball : Texture2D
+    Player1 : Texture2D
 }
 
 let tickPerMinute = TimeSpan.FromSeconds 1.
@@ -27,6 +28,7 @@ type MyGame (width, height) as this =
     let mutable resources = Unchecked.defaultof<Resources>
 
     let mutable ball = Unchecked.defaultof<Animation>
+    let mutable player1 = Unchecked.defaultof<Animation>
 
     let mutable state = {Match = newMatch(); Time = 0u}
 
@@ -46,19 +48,22 @@ type MyGame (width, height) as this =
         resources <- {
             Pitch = this.Content.Load<Texture2D>("Images/pitch");
             Font = this.Content.Load<SpriteFont>("Fonts/Font");
-            Ball = this.Content.Load<Texture2D>("Images/ball")
+            Ball = this.Content.Load<Texture2D>("Images/ball");
+            Player1 = this.Content.Load<Texture2D>("Images/Player1")
         }
         ball <- createAnimation resources.Ball 4 (TimeSpan.FromSeconds(0.5)) |> unpause
-        
+        player1 <- createAnimation resources.Player1 4 (TimeSpan.FromSeconds(0.5)) |> unpause
 
     override x.Draw gameTime = 
         this.GraphicsDevice.Clear Color.CornflowerBlue
         spriteBatch.Begin()
         renderPitch spriteBatch
         renderInformation spriteBatch
-        drawAnimation spriteBatch ball 100 100
+        drawAnimation spriteBatch player1 75 75
+        drawAnimation spriteBatch ball 115 120
         spriteBatch.End()
         ()
     
     override x.Update gameTime = 
+        player1 <- tick player1 gameTime
         ball <- tick ball gameTime
