@@ -14,6 +14,7 @@ type Resources = {
     Ball : Texture2D
     Player1 : Texture2D
     Player2 : Texture2D
+    Card : Texture2D
 }
 
 let tickPerMinute = TimeSpan.FromSeconds 1.
@@ -31,6 +32,7 @@ type MyGame (width, height) as this =
     let mutable ball = Unchecked.defaultof<Animation>
     let mutable player1 = Unchecked.defaultof<Animation>
     let mutable player2 = Unchecked.defaultof<Animation>
+    let mutable card = Unchecked.defaultof<Animation>
 
     let mutable state = {Match = newMatch(); Time = 0u}
 
@@ -53,10 +55,12 @@ type MyGame (width, height) as this =
             Ball = this.Content.Load<Texture2D>("Images/ball");
             Player1 = this.Content.Load<Texture2D>("Images/Player1");
             Player2 = this.Content.Load<Texture2D>("Images/Player2");
+            Card = this.Content.Load<Texture2D>("Images/Card");
         }
         ball <- createAnimation resources.Ball 4 (TimeSpan.FromSeconds(0.5)) |> unpause
         player1 <- createAnimation resources.Player1 4 (TimeSpan.FromSeconds(0.5)) |> unpause
         player2 <- createAnimation resources.Player2 4 (TimeSpan.FromSeconds(0.5)) |> unpause |> faceLeft
+        card <- createAnimation resources.Card 1 (TimeSpan.Zero)
 
     override x.Draw gameTime = 
         this.GraphicsDevice.Clear Color.CornflowerBlue
@@ -66,6 +70,7 @@ type MyGame (width, height) as this =
         drawAnimation spriteBatch player1 75 75
         drawAnimation spriteBatch player2 175 175
         drawAnimation spriteBatch ball 115 120
+        drawAnimation spriteBatch card 260 200
         spriteBatch.End()
         ()
     
@@ -73,3 +78,4 @@ type MyGame (width, height) as this =
         player1 <- tick player1 gameTime
         player2 <- tick player2 gameTime
         ball <- tick ball gameTime
+        card <- tick card gameTime
